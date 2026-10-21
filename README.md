@@ -1,13 +1,20 @@
-# LA9 — Movies
+# ITRACKB4 LA10 — Movies
 
-**F1. Which column did you make nullable, and why?**
+## G1. Which column did you turn into a table, and why that one?
+I turned the `genre` column into a lookup table because the same genre values
+like Sci-Fi, Action, and Thriller repeat across many movie records. It is a
+thing in its own right that could one day have its own details. Columns like
+`release_year`, `rating`, and `is_featured` are just plain values that belong
+only to that movie, so they do not qualify.
 
-I made the `rating` column nullable because not all movies have a confirmed age rating. The other columns, such as `title`, `genre`, `release_year`, and `is_featured`, are essential for every movie record, so they should not be left empty.
+## G2. What number did screenshot 6 show, and why exactly that number?
+Screenshot 6 showed 8 queries. There was 1 query to fetch all movies, then
+1 separate query for each of the 6 movies to get its genre through the
+relationship, plus 1 query to load all genres for the filter buttons.
+That is 8 total — one extra query per movie is the N+1 problem.
 
-**F2. Which step failed first, and what did the error say?**
-
-The first step that failed was Part B, when I tried to create a record in Tinker without defining `$fillable`. Laravel threw a `MassAssignmentException`, indicating that the model did not allow mass assignment. The error helped me identify the problem and add the necessary fields to `$fillable`.
-
-**F3. You changed no Blade file in Part D, yet your pages still work. Why?**
-
-The Blade files already used the same variable names, such as `$movies` and `$movie`, that the controller passes using `compact()`. The views do not depend on whether the data comes from a JSON file or an Eloquent query. As long as the controller provides the expected variables and data structure, the pages can render correctly without changing the Blade files.
+## G3. What would break if you named belongsTo in the plural?
+If the method was named `genres()` instead of `genre()`, Eloquent would look
+for a column called `genres_id` in the movies table instead of `genre_id`.
+That column does not exist, so every call to `$movie->genre->name` would
+crash with an error saying the relationship could not be found.

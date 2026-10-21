@@ -22,10 +22,10 @@
     {{-- Genre filter links --}}
     <div class="mb-2">
         <strong>Genre:</strong>
-        @foreach(['Animation','Thriller','Action','Drama','Romance','Sci-fi'] as $g)
-            <a href="{{ route('movies.index', array_filter(['genre' => $g, 'rating' => $currentRating])) }}"
-               class="btn btn-sm {{ strtolower($currentGenre) === strtolower($g) ? 'btn-dark' : 'btn-outline-secondary' }} me-1">
-                {{ $g }}
+        @foreach($genres as $g)
+            <a href="{{ route('movies.index', array_filter(['genre' => $g->id, 'rating' => $currentRating])) }}"
+                class="btn btn-sm {{ $currentGenre == $g->id ? 'btn-dark' : 'btn-outline-secondary' }} me-1">
+                    {{ $g->name }}
             </a>
         @endforeach
     </div>
@@ -51,7 +51,7 @@
         @forelse ($movies as $movie)
             <tr>
                 <td>{{ $movie['title'] }}</td>
-                <td>{{ $movie['genre'] }}</td>
+                <td>{{ $movie->genre->name }}</td>
                 <td>{{ $movie['rating'] }}</td>
                 <td><a href="{{ route('movies.show', $movie['id']) }}" class="btn btn-primary btn-sm">View</a></td>
             </tr>
@@ -59,4 +59,5 @@
             <tr><td colspan="4" class="text-center text-muted">No movies match these filters.</td></tr>
         @endforelse
     </table>
+    
 @endsection

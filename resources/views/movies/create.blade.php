@@ -18,20 +18,43 @@
         </div>
 
         <div class="mb-3">
-            <label for="genre" class="form-label">Genre</label>
-            <select id="genre" name="genre" class="form-select @error('genre') is-invalid @enderror">
+            <label for="genre_id" class="form-label">Genre</label>
+            <select id="genre_id" name="genre_id" class="form-select @error('genre_id') is-invalid @enderror">
                 <option value="">-- choose --</option>
-                @foreach (['Animation', 'Thriller', 'Action', 'Drama', 'Romance', 'Sci-fi'] as $g)
-                    <option value="{{ $g }}" @selected(old('genre') === $g)>{{ $g }}</option>
+                @foreach ($genres as $g)
+                    <option value="{{ $g->id }}"
+                        @selected(old('genre_id') == $g->id)
+                    >{{ $g->name }}</option>
                 @endforeach
             </select>
-            @error('genre')
+            @error('genre_id')
                 <div class="text-danger small">{{ $message }}</div>
             @enderror
         </div>
 
         <div class="mb-3">
-            <label for="rating" class="form-label">Rating (0 to 10)</label>
+            <label for="release_year" class="form-label">Release Year</label>
+            <input type="number" id="release_year" name="release_year" value="{{ old('release_year') }}"
+                   class="form-control @error('release_year') is-invalid @enderror">
+            @error('release_year')
+                <div class="text-danger small">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Featured?</label>
+            <select name="is_featured" class="form-select @error('is_featured') is-invalid @enderror">
+                <option value="">-- choose --</option>
+                <option value="1" @selected(old('is_featured') == '1')>Yes</option>
+                <option value="0" @selected(old('is_featured') == '0')>No</option>
+            </select>
+            @error('is_featured')
+                <div class="text-danger small">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <div class="mb-3">
+            <label for="rating" class="form-label">Rating (e.g. PG, PG-13, R)</label>
             <input type="text" id="rating" name="rating" value="{{ old('rating') }}"
                    class="form-control @error('rating') is-invalid @enderror">
             @error('rating')
